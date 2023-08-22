@@ -47,5 +47,6 @@ with DDGS() as ddgs:
             img.save(os.path.join(output_dir, f"{uuid_id}.jpg"))
             with open(os.path.join(output_dir, f"{uuid_id}.json"), "w") as f:
                 json.dump(r, f)
+            print(f"Saved: {url}")
         except PIL.UnidentifiedImageError:
             print(f"Error: {url}")
