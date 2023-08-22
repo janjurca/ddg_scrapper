@@ -38,7 +38,7 @@ with DDGS() as ddgs:
     for r in ddgs_images_gen:
         uuid = uuid.uuid4()
         title = r['title']
-        url = r['url']
+        url = r['image']
         response = requests.get(url)
         img = Image.open(BytesIO(response.content))
         img.save(os.path.join(output_dir, f"{uuid}.jpg"))
