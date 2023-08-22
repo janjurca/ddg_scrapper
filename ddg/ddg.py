@@ -4,6 +4,8 @@ import os
 from PIL import Image
 import uuid
 import json
+import requests
+from io import BytesIO
 
 parser = argparse.ArgumentParser(description='Search for images on DuckDuckGo')
 parser.add_argument('keywords', type=str, nargs='+',)
@@ -37,6 +39,8 @@ with DDGS() as ddgs:
         uuid = uuid.uuid4()
         title = r['title']
         url = r['url']
-        Image.open(ddgs.get_image(url)).save(os.path.join(output_dir, f"{uuid}.jpg"))
+        response = requests.get(url)
+        img = Image.open(BytesIO(response.content))
+        img.save(os.path.join(output_dir, f"{uuid}.jpg"))
         with open(os.path.join(output_dir, f"{uuid}.json"), "w") as f:
             json.dump(r, f)
