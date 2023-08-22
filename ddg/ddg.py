@@ -50,3 +50,5 @@ with DDGS() as ddgs:
             print(f"Saved: {url}")
         except PIL.UnidentifiedImageError:
             print(f"Error: {url}")
+        except requests.exceptions.SSLError:
+            print(f"Error: {url}")
