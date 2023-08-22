@@ -1,6 +1,7 @@
 from duckduckgo_search import DDGS
 import argparse
 import os
+import PIL
 from PIL import Image
 import uuid
 import json
@@ -36,11 +37,15 @@ with DDGS() as ddgs:
       license_image=args.license_image,
     )
     for r in ddgs_images_gen:
-        uuid = uuid.uuid4()
+        uuid_id = str(uuid.uuid4())
         title = r['title']
         url = r['image']
         response = requests.get(url)
-        img = Image.open(BytesIO(response.content))
-        img.save(os.path.join(output_dir, f"{uuid}.jpg"))
-        with open(os.path.join(output_dir, f"{uuid}.json"), "w") as f:
-            json.dump(r, f)
+        try:
+            img = Image.open(BytesIO(response.content))
+            img = img.convert('RGB')
+            img.save(os.path.join(output_dir, f"{uuid_id}.jpg"))
+            with open(os.path.join(output_dir, f"{uuid_id}.json"), "w") as f:
+                json.dump(r, f)
+        except PIL.UnidentifiedImageError:
+            print(f"Error: {url}")
