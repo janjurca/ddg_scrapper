@@ -40,8 +40,8 @@ with DDGS() as ddgs:
         uuid_id = str(uuid.uuid4())
         title = r['title']
         url = r['image']
-        response = requests.get(url)
         try:
+            response = requests.get(url)
             img = Image.open(BytesIO(response.content))
             img = img.convert('RGB')
             img.save(os.path.join(output_dir, f"{uuid_id}.jpg"))
